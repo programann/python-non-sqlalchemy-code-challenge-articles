@@ -17,7 +17,8 @@ class Author:
 
     def add_article(self, magazine, title):
         article = Article(self, magazine, title)
-        self._articles.append(article)
+        if article not in self._articles:  # Ensure article is not added multiple times
+            self._articles.append(article)
         return article
 
     def topic_areas(self):
@@ -71,15 +72,8 @@ class Magazine:
         return [article.title for article in self._articles]
 
     def contributing_authors(self):
-        if not self._articles:
-            return None
-        author_count = {}
-        for article in self._articles:
-            if article.author in author_count:
-                author_count[article.author] += 1
-            else:
-                author_count[article.author] = 1
-        return [author for author, count in author_count.items() if count > 2]
+        authors = set(article.author for article in self._articles if self._articles.count(article) > 2)
+        return list(authors) if authors else None
 
     @classmethod
     def top_publisher(cls):
@@ -89,6 +83,8 @@ class Magazine:
 
 
 class Article:
+    all = []  # Initialize an empty list to hold all articles
+
     def __init__(self, author, magazine, title):
         if not isinstance(author, Author):
             raise Exception("Author must be an instance of Author")
@@ -102,6 +98,9 @@ class Article:
         self._title = title
         author.articles().append(self)
         magazine.articles().append(self)
+
+        # Add the created article to the 'all' attribute
+        Article.all.append(self)
 
     @property
     def title(self):
@@ -126,5 +125,3 @@ class Article:
         if not isinstance(value, Author):
             raise Exception("Author must be an instance of Author")
         self._author = value
-
-
