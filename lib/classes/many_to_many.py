@@ -1,6 +1,6 @@
 class Article:
-    all = []  # Initialize an empty list to hold all articles
-
+    all = []  # Iintialise an empty string.
+    #The constructor
     def __init__(self, author, magazine, title):
         if not isinstance(author, Author):
             raise Exception("Author must be an instance of Author")
