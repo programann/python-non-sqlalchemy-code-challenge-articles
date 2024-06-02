@@ -61,7 +61,7 @@ class Author:
 
     def add_article(self, magazine, title):
         article = Article(self, magazine, title)
-        if article not in self._articles:  # Ensure article is not added multiple times
+        if article not in self._articles:  
             self._articles.append(article)
         return article
 
